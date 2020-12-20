@@ -164,7 +164,7 @@ function lsb() {
 
 function copyright_msg() {
 
-    echo `basename ${0}`" v${VER} - Install Ubuntu 20.04."
+    echo `basename ${0}`" v${VER} - Install frp."
     echo
 }
 
