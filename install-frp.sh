@@ -163,7 +163,6 @@ function lsb() {
 # common ################################################################# END #
 
 function copyright_msg() {
-
     echo `basename ${0}`" v${VER} - Install frp."
     echo
 }
