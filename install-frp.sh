@@ -235,7 +235,12 @@ function deploy_frp() {
     cp -f frpc /usr/bin
     mkdir -p /etc/frp
     cp ../frpc.ini /etc/frp
-    cp systemd/frpc.service /etc/systemd/system
+    if [[ -f "systemd/frpc.service" ]]; then
+        cp systemd/frpc.service /etc/systemd/system
+    else
+        wget -O frpc.service https://raw.githubusercontent.com/fatedier/frp/v0.42.0/conf/systemd/frpc.service
+        cp frpc.service /etc/systemd/system
+    fi
     cd ..
     systemctl enable frpc.service >> /dev/null
     service frpc start &
