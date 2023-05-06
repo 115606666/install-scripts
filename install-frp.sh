@@ -217,7 +217,7 @@ function create_setting() {
     cat > frpc.ini << __EOF
 [common]
 server_addr = ${SERVER_ADDR}
-server_port = 7000
+server_port = ${SERVER_PORT}
 token = ${TOKEN}
 
 [${MACHINE_NAME}]
