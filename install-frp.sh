@@ -198,7 +198,7 @@ function check_jq() {
     fi
     pid=$!;progress $pid
     chmod +x jq
-    chown mike:mike jq
+    chown $USER:$USER jq
 }
 
 function download_frp() {
