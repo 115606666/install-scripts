@@ -241,6 +241,7 @@ function deploy_frp() {
         cp systemd/frpc.service /etc/systemd/system
     else
         wget -O frpc.service https://raw.githubusercontent.com/fatedier/frp/v0.42.0/conf/systemd/frpc.service
+	sed -i 's,ini,toml,' frpc.service
         cp frpc.service /etc/systemd/system
     fi
     cd ..
@@ -269,7 +270,7 @@ copyright_msg
 # Check we are running on a supported system in the correct way.
 check_root
 check_sudo
-check_ubuntu "all"
+#check_ubuntu "all"
 
 # Init variables
 MACHINE_NAME=""
