@@ -225,7 +225,7 @@ auth.token = "${TOKEN}"
 name = "${MACHINE_NAME}"
 type = "tcp"
 localIP = "127.0.0.1"
-localPort = 22
+localPort = ${SSH_PORT}
 remotePort = ${REMOTE_PORT}
 __EOF
     pid=$!;progress $pid
@@ -277,6 +277,7 @@ TOKEN=""
 SERVER_ADDR=""
 SERVER_PORT=""
 REMOTE_PORT=""
+SSH_PORT="22"
 FORCE=0
 FRP_FULLNAME="" # frp_0.34.3_linux_amd64.tar.gz
 FRP_BASENAME="" # frp_0.34.3_linux_amd64
@@ -287,7 +288,7 @@ if [ -f $log ]; then
 fi
 
 # Parse the options
-OPTSTRING=a:fhm:p:r:t:
+OPTSTRING=a:fhm:p:r:s:t:
 while getopts ${OPTSTRING} OPT
 do
     case ${OPT} in
@@ -297,6 +298,7 @@ do
         m) MACHINE_NAME=$OPTARG;;
         p) SERVER_PORT=$OPTARG;;
         r) REMOTE_PORT=$OPTARG;;
+        s) SSH_PORT=$OPTARG;;
         t) TOKEN=$OPTARG;;
         *) usage;;
     esac
@@ -308,6 +310,7 @@ cecho MACHINE_NAME=$MACHINE_NAME
 cecho SERVER_ADDR=$SERVER_ADDR
 cecho SERVER_PORT=$SERVER_PORT
 cecho REMOTE_PORT=$REMOTE_PORT
+cecho SSH_PORT=$SSH_PORT
 cecho TOKEN=$TOKEN
 cecho FORCE=$FORCE
 cecho
