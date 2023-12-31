@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Version
-VER="0.0.1-dev"
+VER="0.0.2-dev"
 
 # check the --fqdn version, if it's absent fall back to hostname
 HOSTNAME=$(hostname --fqdn 2>/dev/null)
@@ -186,7 +186,7 @@ function usage() {
 }
 
 function check_install() {
-    if [ "$FORCE" -eq 0 ] && [ -f /etc/frp/frpc.ini ]; then
+    if [ "$FORCE" -eq 0 ] && [ -f /etc/frp/frpc.toml ]; then
         error_msg "FRP already installed, please check or use -f to force install."
     fi
 }
@@ -214,17 +214,19 @@ function download_frp() {
 
 function create_setting() {
     ncecho " [x] Create setting "
-    cat > frpc.ini << __EOF
-[common]
-server_addr = ${SERVER_ADDR}
-server_port = ${SERVER_PORT}
-token = ${TOKEN}
+    cat > frpc.toml << __EOF
+user = "user"
+serverAddr = "${SERVER_ADDR}"
+serverPort = ${SERVER_PORT}
+auth.method = "token"
+auth.token = "${TOKEN}"
 
-[${MACHINE_NAME}]
-type = tcp
-local_ip = 127.0.0.1
-local_port = 22
-remote_port = ${REMOTE_PORT}
+[[proxies]]
+name = "${MACHINE_NAME}"
+type = "tcp"
+localIP = "127.0.0.1"
+localPort = 22
+remotePort = ${REMOTE_PORT}
 __EOF
     pid=$!;progress $pid
 }
@@ -234,7 +236,7 @@ function deploy_frp() {
     cd $FRP_BASENAME
     cp -f frpc /usr/bin
     mkdir -p /etc/frp
-    cp ../frpc.ini /etc/frp
+    cp ../frpc.toml /etc/frp
     if [[ -f "systemd/frpc.service" ]]; then
         cp systemd/frpc.service /etc/systemd/system
     else
@@ -249,7 +251,7 @@ function deploy_frp() {
 
 function clean_all() {
     ncecho " [x] Clean all "
-    rm -rf jq frpc.ini install-frp.sh $FRP_FULLNAME $FRP_BASENAME &
+    rm -rf jq frpc.toml install-frp.sh $FRP_FULLNAME $FRP_BASENAME &
     pid=$!;progress $pid
     rm install-frp.sh.log
 }

@@ -7,7 +7,7 @@ Type=simple
 User=nobody
 Restart=on-failure
 RestartSec=5s
-ExecStart=/usr/bin/frps -c /etc/frp/frps.ini
+ExecStart=/usr/bin/frps -c /etc/frp/frps.toml
 LimitNOFILE=1048576
 
 [Install]
